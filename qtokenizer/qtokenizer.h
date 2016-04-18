@@ -3,7 +3,7 @@
 ** Copyright (C) 2014 Daniel Molkentin <daniel@molkentin.de>
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtGui module of the Qt Toolkit.
+** This file is part of the QtNetwork module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
