@@ -51,12 +51,27 @@ private slots:
     const QString multiquote(QLatin1String("\"'Billy - the Kid' is dead!\""));
     QStringTokenizer tokenizer(multiquote, " -");
     tokenizer.setQuoteCharacters("\"");
+    tokenizer.setReturnQuoteCharacters(true);
 
     QCOMPARE(tokenizer.hasNext(), true);
     QCOMPARE(tokenizer.next(), QLatin1String("\"'Billy - the Kid' is dead!\""));
 
     QCOMPARE(tokenizer.hasNext(), false);
   }
+
+  void tokenizeQStringSkipQuotes() {
+    const QString multiquote(QLatin1String("\"'Billy - the Kid' is dead!\""));
+    QStringTokenizer tokenizer(multiquote, " ");
+    tokenizer.setQuoteCharacters("\"");
+    tokenizer.setReturnQuoteCharacters(false);
+
+    QCOMPARE(tokenizer.hasNext(), true);
+    QCOMPARE(tokenizer.next(), QLatin1String("'Billy - the Kid' is dead!"));
+    QCOMPARE(tokenizer.stringRef().toString(), QLatin1String("'Billy - the Kid' is dead!"));
+
+    QCOMPARE(tokenizer.hasNext(), false);
+  }
+
 
   void tokenizeQStringWithDelims() {
     const QString delims(QLatin1String("I;Insist,On/a-Delimiter"));
@@ -120,5 +135,5 @@ private slots:
 
 QTEST_APPLESS_MAIN(TestTokenizer)
 
-#include "tst_tokenizer.moc"
+#include "tst_qtokenizer.moc"
 

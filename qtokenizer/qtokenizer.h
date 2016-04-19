@@ -68,6 +68,7 @@ struct QTokenizerPrivate {
       , delimiters(_delims)
       , isDelim(false)
       , returnDelimiters(false)
+      , returnQuotes(false)
     {
     }
 
@@ -107,6 +108,7 @@ struct QTokenizerPrivate {
     T quotes;
     bool isDelim;
     bool returnDelimiters;
+    bool returnQuotes;
 };
 
 template <class T, class const_iterator>
@@ -163,6 +165,14 @@ public:
      */
     void setQuoteCharacters(const T& quotes) { d->quotes = quotes; }
 
+
+    /*!
+       Whether or not to return delimiters ase tokens
+       \see setQuoteCharacters
+     */
+    void setReturnQuoteCharacters(bool enable) { d->returnQuotes = enable; }
+
+
     /*!
        Retrieve next token.
 
@@ -210,7 +220,15 @@ public:
 
        Use \c hasNext() to fetch the next token.
      */
-    T next() const { return T(d->tokenBegin, d->tokenEnd-d->tokenBegin); }
+    T next() const {
+        int len = d->tokenEnd-d->tokenBegin;
+        const_iterator tmpStart = d->tokenBegin;
+        if (!d->returnQuotes && len > 1 && d->isQuote(*d->tokenBegin)) {
+            tmpStart++;
+            len -= 2;
+        }
+        return T(tmpStart, len);
+    }
 
 private:
     friend class QStringTokenizer;
@@ -225,7 +243,15 @@ public:
      * @brief Like \see next(), but returns a lightweight string reference
      * @return A reference to the token within the string
      */
-    QStringRef stringRef() { return QStringRef(&d->string, d->tokenBegin-d->begin, d->tokenEnd-d->tokenBegin); }
+    QStringRef stringRef() {
+        int begin = d->tokenBegin-d->begin;
+        int end = d->tokenEnd-d->tokenBegin;
+        if (!d->returnQuotes && d->isQuote(*d->tokenBegin)) {
+            begin++;
+            end -= 2;
+        }
+        return QStringRef(&d->string, begin, end);
+    }
 };
 
 typedef QTokenizer<QByteArray, QByteArray::const_iterator> QByteArrayTokenizer;
