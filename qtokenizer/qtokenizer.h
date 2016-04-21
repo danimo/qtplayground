@@ -146,7 +146,7 @@ public:
     }
 
     /*!
-       Whether or not to return delimiters ase tokens
+       Whether or not to return delimiters as tokens
        \see setQuoteCharacters
      */
     void setReturnDelimiters(bool enable) { d->returnDelimiters = enable; }
@@ -167,7 +167,7 @@ public:
 
 
     /*!
-       Whether or not to return delimiters ase tokens
+       Whether or not to return delimiters as tokens
        \see setQuoteCharacters
      */
     void setReturnQuoteCharacters(bool enable) { d->returnQuotes = enable; }
